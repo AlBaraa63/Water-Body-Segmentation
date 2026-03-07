@@ -1,0 +1,13 @@
+# ============================================================
+#  Water Segmentation — Dependencies
+#  Install with: pip install -r requirements.txt
+# ============================================================
+
+numpy
+matplotlib
+rasterio
+torch
+torchvision
+scikit-learn
+jupyter
+tqdm

@@ -1,0 +1,47 @@
+# ── Python ──────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# ── Virtual Environments ─────────────────────────────────────────────────
+venv/
+env/
+.env/
+.venv/
+
+# ── Data ─────────────────────────────────────────────────────────────────
+# Raw and processed data are NOT committed (too large, dataset licence)
+data/raw/
+data/processed/
+
+# Stats file is small and reproducible — commit it
+!data/processed/stats.json
+
+# ── Model Checkpoints ────────────────────────────────────────────────────
+# Binary weights are large; re-train from scratch using this repo
+outputs/checkpoints/
+
+# ── Keep output plots (they tell the story) ──────────────────────────────
+# outputs/plots/ is tracked — visual evidence of the training run
+!outputs/plots/
+
+# ── IDE / OS ─────────────────────────────────────────────────────────────
+.vscode/
+.idea/
+*.DS_Store
+Thumbs.db
+
+# ── Jupyter ──────────────────────────────────────────────────────────────
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# ── Logs ─────────────────────────────────────────────────────────────────
+outputs/logs/
+*.log

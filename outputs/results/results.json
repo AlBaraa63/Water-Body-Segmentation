@@ -1,0 +1,16 @@
+{
+  "best_iou": 0.8169701099395752,
+  "best_epoch": 92,
+  "early_stopped": true,
+  "final_lr": 6.25e-05,
+  "total_time": "0h 3m 58s",
+  "avg_epoch_time": 2.2,
+  "params": 31042817,
+  "epochs_trained": 107,
+  "final_metrics": {
+    "IoU": 0.8115658760070801,
+    "F1": 0.8959041237831116,
+    "Precision": 0.9053185780843099,
+    "Recall": 0.8878587881724039
+  }
+}
