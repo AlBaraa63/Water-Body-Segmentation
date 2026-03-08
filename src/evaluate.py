@@ -69,3 +69,8 @@ def evaluate(model, test_loader, device, save_dir=RESULTS_DIR):
     plot_final_evaluation(model, test_loader, device)
 
     return final
+
+def evaluate_and_visualize(model, test_loader, device, save_dir=RESULTS_DIR):
+    """Generate final evaluation visualizations without running full metric computation."""
+    os.makedirs(save_dir, exist_ok=True)
+    plot_final_evaluation(model, test_loader, device, save_dir=save_dir)

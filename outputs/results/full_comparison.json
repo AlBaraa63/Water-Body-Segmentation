@@ -1,0 +1,41 @@
+{
+    "baseline": {
+        "label": "From Scratch (U-Net)",
+        "IoU": 0.817,
+        "F1": 0.8959,
+        "Precision": 0.9053,
+        "Recall": 0.8879
+    },
+    "experiments": {
+        "exp1": {
+            "label": "Experiment 1 \u2014 UNet + Pre-Layer (ResNet50)",
+            "metrics": {
+                "IoU": 0.8275,
+                "F1": 0.9046,
+                "Precision": 0.9575,
+                "Recall": 0.8586
+            }
+        },
+        "exp2": {
+            "label": "Experiment 2 \u2014 UNet + Replace First Layer (ResNet50)",
+            "metrics": {
+                "IoU": 0.8423,
+                "F1": 0.9133,
+                "Precision": 0.9599,
+                "Recall": 0.8733
+            }
+        },
+        "exp3": {
+            "label": "Experiment 3 \u2014 SMP UNet + MiT-B2 (Transformer)",
+            "metrics": {
+                "IoU": 0.8538,
+                "F1": 0.92,
+                "Precision": 0.9391,
+                "Recall": 0.9028
+            }
+        }
+    },
+    "winner": "SMP UNet + MiT-B2 (Transformer)",
+    "best_iou": 0.8538,
+    "timestamp": "2026-03-08 13:58:29"
+}

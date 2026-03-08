@@ -1,0 +1,12 @@
+{
+    "experiment": "exp3",
+    "label": "Experiment 3 \u2014 SMP UNet + MiT-B2 (Transformer)",
+    "best_val_iou": 0.8377,
+    "test_metrics": {
+        "IoU": 0.8538,
+        "F1": 0.92,
+        "Precision": 0.9391,
+        "Recall": 0.9028
+    },
+    "timestamp": "2026-03-08 13:58:29"
+}

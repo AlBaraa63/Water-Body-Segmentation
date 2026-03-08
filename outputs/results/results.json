@@ -1,16 +1,16 @@
 {
-  "best_iou": 0.8169701099395752,
-  "best_epoch": 92,
-  "early_stopped": true,
-  "final_lr": 6.25e-05,
-  "total_time": "0h 3m 58s",
+  "best_iou": 0.8377419114112854,
+  "best_epoch": 3,
+  "early_stopped": false,
+  "final_lr": 0.0001,
+  "total_time": "0h 0m 8s",
   "avg_epoch_time": 2.2,
-  "params": 31042817,
-  "epochs_trained": 107,
+  "params": 27505233,
+  "epochs_trained": 4,
   "final_metrics": {
-    "IoU": 0.8115658760070801,
-    "F1": 0.8959041237831116,
-    "Precision": 0.9053185780843099,
-    "Recall": 0.8878587881724039
+    "IoU": 0.8366882999738058,
+    "F1": 0.9109241565068563,
+    "Precision": 0.8959147334098816,
+    "Recall": 0.9267301360766093
   }
 }

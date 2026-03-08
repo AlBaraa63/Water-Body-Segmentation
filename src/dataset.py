@@ -1,9 +1,11 @@
 import os
-import numpy as np
-from torch.utils.data import Dataset, DataLoader
-import torch
 import sys
-sys.path.append("../src")
+
+import numpy as np
+import torch
+from torch.utils.data import Dataset, DataLoader
+
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from preprocessing import load_tif, replace_nodata, normalize_with_stats, normalize_mask
 
@@ -60,7 +62,7 @@ class WaterSegmentationDataset(Dataset):
         mask  = load_tif(mask_path)  # (128, 128, 1)
 
         # Clean and normalize
-        image = replace_nodata(image)
+        image = replace_nodata(image, verbose=False)
         image = normalize_with_stats(image, self.stats)
         mask  = normalize_mask(mask)
 

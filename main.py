@@ -20,7 +20,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "src"))
 
 from config import *
-from model import UNet, count_parameters
+from models import UNet, count_parameters
 from dataset import WaterSegmentationDataset, split_dataset, get_dataloaders
 from preprocessing import compute_global_stats, save_stats, load_stats
 from train import train

@@ -13,24 +13,32 @@ build/
 # ── Virtual Environments ─────────────────────────────────────────────────
 venv/
 env/
-.env/
+.env
 .venv/
 
 # ── Data ─────────────────────────────────────────────────────────────────
-# Raw and processed data are NOT committed (too large, dataset licence)
+# Raw satellite images are too large for GitHub
 data/raw/
-data/processed/
 
-# Stats file is small and reproducible — commit it
+# Processed folder is ignored except stats.json
+data/processed/
 !data/processed/stats.json
 
 # ── Model Checkpoints ────────────────────────────────────────────────────
-# Binary weights are large; re-train from scratch using this repo
+# Binary weights are large — re-train using this repo
 outputs/checkpoints/
+*.pth
 
-# ── Keep output plots (they tell the story) ──────────────────────────────
-# outputs/plots/ is tracked — visual evidence of the training run
-!outputs/plots/
+# ── Predictions ──────────────────────────────────────────────────────────
+outputs/predictions/
+
+# ── Logs ─────────────────────────────────────────────────────────────────
+outputs/logs/
+*.log
+
+# ── Keep plots and results (they tell the story) ─────────────────────────
+# outputs/plots/   → tracked (visual evidence)
+# outputs/results/ → tracked (JSON metrics)
 
 # ── IDE / OS ─────────────────────────────────────────────────────────────
 .vscode/
@@ -40,8 +48,6 @@ Thumbs.db
 
 # ── Jupyter ──────────────────────────────────────────────────────────────
 .ipynb_checkpoints/
-*.ipynb_checkpoints
 
-# ── Logs ─────────────────────────────────────────────────────────────────
-outputs/logs/
-*.log
+# ── Satellite imagery ────────────────────────────────────────────────────
+*.tif

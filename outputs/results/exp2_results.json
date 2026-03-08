@@ -1,0 +1,12 @@
+{
+    "experiment": "exp2",
+    "label": "Experiment 2 \u2014 UNet + Replace First Layer (ResNet50)",
+    "best_val_iou": 0.8473,
+    "test_metrics": {
+        "IoU": 0.8423,
+        "F1": 0.9133,
+        "Precision": 0.9599,
+        "Recall": 0.8733
+    },
+    "timestamp": "2026-03-08 13:58:14"
+}

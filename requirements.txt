@@ -9,5 +9,6 @@ rasterio
 torch
 torchvision
 scikit-learn
-jupyter
+segmentation-models-pytorch
 tqdm
+jupyter

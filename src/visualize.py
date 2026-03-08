@@ -252,7 +252,7 @@ def plot_metrics(metrics_history):
 
 
 # ======================== 9. final_evaluation.png ========================
-def plot_final_evaluation(model, test_loader, device, num_samples=6):
+def plot_final_evaluation(model, test_loader, device, num_samples=6, save_dir=PLOT_DIR):
     """
     6 test samples with overlay: green=correct, red=missed, blue=false alarm.
     """
@@ -307,7 +307,8 @@ def plot_final_evaluation(model, test_loader, device, num_samples=6):
 
     plt.suptitle("Final Test Evaluation", fontsize=15)
     plt.tight_layout()
-    path = os.path.join(PLOT_DIR, "final_evaluation.png")
+    os.makedirs(save_dir, exist_ok=True)
+    path = os.path.join(save_dir, "final_evaluation.png")
     plt.savefig(path, dpi=150, bbox_inches="tight")
     plt.close(fig)
     print(f"  >> Saved -> {path}")

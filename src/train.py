@@ -149,7 +149,7 @@ def train(model, train_loader, val_loader, device,
     os.makedirs(RESULTS_DIR, exist_ok=True)
 
     # ── Setup ─────────────────────────────────────────
-    from model import BCEDiceLoss, count_parameters
+    from models import BCEDiceLoss, count_parameters
     criterion = BCEDiceLoss()
     optimizer = torch.optim.Adam(model.parameters(), lr=lr)
     # ReduceLROnPlateau: halves LR only when IoU stagnates (patience=5 epochs).
