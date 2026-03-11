@@ -1,6 +1,6 @@
 # 🌊 Water Body Segmentation using Deep Learning
 
-A deep learning pipeline for semantic segmentation of water bodies from 12-band multispectral satellite imagery, leveraging custom U-Net architectures and transfer learning.
+A deep learning pipeline for semantic segmentation of water bodies from 12-band multispectral satellite imagery. It leverages custom U-Net architectures, transfer learning, and is fully deployed as a standalone Flask web application.
 
 ![Python](https://img.shields.io/badge/Python-3.10+-blue?logo=python)
 ![PyTorch](https://img.shields.io/badge/PyTorch-2.0+-red?logo=pytorch)
@@ -36,6 +36,7 @@ Accurate water body detection from satellite imagery is critical for flood monit
 - **Robust Preprocessing**: Built-in detection and handling of Sentinel-2 missing data signatures (`-9999` NaN poisoning).
 - **Advanced Transfer Learning**: Explores multiple adaptation strategies (Pre-layer, Replace-layer, Transformer Encoders) to map 12-channel inputs to standard 3-channel pretrained backbones.
 - **Micro-batch Optimization**: Optimized for learning on a small dataset (306 images) using aggressive augmentation and early stopping.
+- **Full-Stack Deployment**: Includes a fully functional Flask web server featuring a smooth, drag-and-drop UI to run inference on new `.tif` files in under a second.
 
 ---
 
@@ -157,7 +158,14 @@ notebooks/
 └── 03_transfer_learning.ipynb
 ```
 
-### Run Baseline Model
+### Run Web App (Deployment)
+To start the Flask server and run inference through your browser:
+```bash
+python run_app.py
+# Server will start at http://127.0.0.1:5000
+```
+
+### Run Baseline Model (Training)
 To initiate the standard from-scratch U-Net training pipeline:
 ```bash
 python main.py
@@ -184,6 +192,13 @@ water-segmentation/
 ├── config.py                  ← Central configuration panel (Paths & Hyperparams)
 ├── main.py                    ← End-to-end U-Net baseline run script
 ├── requirements.txt           ← Project dependencies
+├── run_app.py                 ← Main entry point to start the Flask Web App
+│
+├── app/                       ← Web deployment logic
+│   ├── __init__.py            ← Flask app factory and model warm-up
+│   ├── routes.py              ← API endpoints and UI serving
+│   ├── inference.py           ← Inference pipeline (load → normalize → predict)
+│   └── templates/             ← HTML templates (index.html)
 │
 ├── data/
 │   ├── raw/                   ← Original unregistered .tif files
@@ -275,7 +290,7 @@ Sample Output: Base image extraction showcasing raw array structures.
 - [ ] **Temporal Analysis**: Ingest sequential multispectral imagery to isolate permanent bodies from transient seasonal shifts.
 - [ ] **Cross-Validation Implementation**: Enforce K-Fold CV for hyper-robust reliability scores across all data partitions.
 - [ ] **Extended Metrics**: Incorporate edge-aware topology losses to better trace complex shorelines.
-- [ ] **Cloud Deployment Interface**: Set up automated edge inferencing pipelines utilizing Docker and FastAPI frameworks.
+- [x] **Web Deployment Interface**: Set up automated edge inferencing pipelines (Completed in `run_app.py`).
 
 ---
 

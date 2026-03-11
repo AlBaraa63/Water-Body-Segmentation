@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Water Body Segmentation</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: "Segoe UI", sans-serif;
+      background: #0f172a;
+      color: #e2e8f0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 48px 20px;
+    }
+
+    h1 {
+      font-size: 1.8rem;
+      color: #38bdf8;
+      margin-bottom: 6px;
+    }
+
+    .sub {
+      color: #94a3b8;
+      margin-bottom: 36px;
+      font-size: 0.95rem;
+    }
+
+    /* ── Upload card ───────── */
+    .card {
+      background: #1e293b;
+      border: 2px dashed #334155;
+      border-radius: 14px;
+      padding: 40px 52px;
+      width: 100%;
+      max-width: 520px;
+      text-align: center;
+      transition: border-color 0.2s;
+    }
+
+    .card:hover {
+      border-color: #38bdf8;
+    }
+
+    #file-input {
+      display: none;
+    }
+
+    .file-label {
+      display: inline-block;
+      margin-top: 14px;
+      padding: 10px 26px;
+      background: #0ea5e9;
+      color: #fff;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .file-label:hover {
+      background: #0284c7;
+    }
+
+    #file-name {
+      margin-top: 10px;
+      font-size: 0.85rem;
+      color: #64748b;
+    }
+
+    #submit-btn {
+      margin-top: 22px;
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      background: #0ea5e9;
+      color: #fff;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s, opacity 0.2s;
+    }
+
+    #submit-btn:hover:not(:disabled) {
+      background: #0284c7;
+    }
+
+    #submit-btn:disabled {
+      opacity: 0.45;
+      cursor: default;
+    }
+
+    /* ── Status ────────────── */
+    #status {
+      margin-top: 16px;
+      font-size: 0.9rem;
+      min-height: 22px;
+      color: #94a3b8;
+    }
+
+    .spinner {
+      display: inline-block;
+      width: 13px;
+      height: 13px;
+      border: 2px solid #38bdf8;
+      border-top-color: transparent;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      vertical-align: middle;
+      margin-right: 6px;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* ── Results ───────────── */
+    #results {
+      margin-top: 36px;
+      width: 100%;
+      max-width: 520px;
+      display: none;
+    }
+
+    #results h2 {
+      font-size: 0.85rem;
+      color: #64748b;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 12px;
+    }
+
+    #mask-img {
+      width: 100%;
+      border-radius: 10px;
+      border: 1px solid #334155;
+      image-rendering: pixelated;
+    }
+
+    .legend {
+      margin-top: 10px;
+      font-size: 0.8rem;
+      color: #64748b;
+    }
+
+    .legend span {
+      display: inline-block;
+      width: 11px;
+      height: 11px;
+      border-radius: 2px;
+      vertical-align: middle;
+      margin-right: 4px;
+    }
+
+    .w {
+      background: #fff;
+      border: 1px solid #475569;
+    }
+
+    .nw {
+      background: #000;
+      border: 1px solid #475569;
+    }
+
+    #download-btn {
+      display: block;
+      margin-top: 14px;
+      padding: 10px;
+      text-align: center;
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 8px;
+      color: #38bdf8;
+      text-decoration: none;
+      font-weight: 600;
+      transition: background 0.2s;
+    }
+
+    #download-btn:hover {
+      background: #273549;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>🌊 Water Body Segmentation</h1>
+  <p class="sub">Upload a 12-band Sentinel-2 GeoTIFF — receive a binary water mask.</p>
+
+  <div class="card" id="drop-zone">
+    <p>Drag &amp; drop or click to select your <strong>.tif</strong> file</p>
+
+    <label class="file-label" for="file-input">Choose File</label>
+    <input type="file" id="file-input" accept=".tif" />
+
+    <div id="file-name">No file chosen</div>
+    <button id="submit-btn" disabled>Run Segmentation</button>
+    <div id="status"></div>
+  </div>
+
+  <div id="results">
+    <h2>Predicted Water Mask</h2>
+    <img id="mask-img" src="" alt="Water mask" />
+    <div class="legend">
+      <span class="w"></span> Water &nbsp;
+      <span class="nw"></span> Non-water
+    </div>
+    <a id="download-btn" href="#" download="water_mask.png">⬇ Download mask</a>
+  </div>
+
+  <script>
+    const fileInput = document.getElementById("file-input");
+    const fileNameEl = document.getElementById("file-name");
+    const submitBtn = document.getElementById("submit-btn");
+    const statusEl = document.getElementById("status");
+    const resultsDiv = document.getElementById("results");
+    const maskImg = document.getElementById("mask-img");
+    const dlBtn = document.getElementById("download-btn");
+    const dropZone = document.getElementById("drop-zone");
+
+    // ── File selected via picker ──────────────────
+    fileInput.addEventListener("change", () => {
+      const f = fileInput.files[0];
+      fileNameEl.textContent = f ? f.name : "No file chosen";
+      submitBtn.disabled = !f;
+    });
+
+    // ── Submit — fetch POST to /predict ───────────
+    submitBtn.addEventListener("click", async () => {
+      const file = fileInput.files[0];
+      if (!file) return;
+
+      submitBtn.disabled = true;
+      resultsDiv.style.display = "none";
+      statusEl.innerHTML = '<span class="spinner"></span> Running inference…';
+
+      const formData = new FormData();
+      formData.append("file", file);   // key must match request.files["file"]
+
+      try {
+        const res = await fetch("/predict", { method: "POST", body: formData });
+
+        if (!res.ok) {
+          const err = await res.json().catch(() => ({ error: res.statusText }));
+          throw new Error(err.error || "Unknown server error");
+        }
+
+        // Response is PNG bytes — convert to displayable URL
+        const blob = await res.blob();
+        const url = URL.createObjectURL(blob);
+
+        maskImg.src = url;
+        dlBtn.href = url;
+        dlBtn.download = file.name.replace(".tif", "_mask.png");
+
+        resultsDiv.style.display = "block";
+        statusEl.innerHTML = "✅ Done!";
+
+      } catch (err) {
+        statusEl.innerHTML = `❌ ${err.message}`;
+      } finally {
+        submitBtn.disabled = false;
+      }
+    });
+
+    // ── Drag & drop support ───────────────────────
+    dropZone.addEventListener("dragover", e => {
+      e.preventDefault();
+      dropZone.style.borderColor = "#38bdf8";
+    });
+
+    dropZone.addEventListener("dragleave", () => {
+      dropZone.style.borderColor = "#334155";
+    });
+
+    dropZone.addEventListener("drop", e => {
+      e.preventDefault();
+      dropZone.style.borderColor = "#334155";
+
+      const f = e.dataTransfer.files[0];
+      if (f && f.name.endsWith(".tif")) {
+        const dt = new DataTransfer();
+        dt.items.add(f);
+        fileInput.files = dt.files;
+        fileInput.dispatchEvent(new Event("change"));
+      } else {
+        statusEl.textContent = "Only .tif files are accepted.";
+      }
+    });
+  </script>
+
+</body>
+
+</html>
